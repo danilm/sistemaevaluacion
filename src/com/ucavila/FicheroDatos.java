@@ -1,10 +1,12 @@
 package com.ucavila;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.text.ParseException;
@@ -15,6 +17,7 @@ public class FicheroDatos extends File{
 
 	private String nombreFichero;
 	private static final long serialVersionUID = 1L;
+	private static final String SEPARATOR = ",";
 
 	public FicheroDatos(String pathname) {
 		super(pathname);
@@ -22,38 +25,37 @@ public class FicheroDatos extends File{
 		
 	}
 	
-	public Tienda leerFichero(){
-		Tienda tienda = new Tienda();
+	public Tienda leerFichero(String nombre){
+		Tienda tienda = new Tienda(nombre);
 		ArrayList<Vendedor> listaVendedores = new ArrayList<Vendedor>();
-		DataInputStream fich = null;
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+		BufferedReader fich = null;
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		try {
-			fich =new DataInputStream(new FileInputStream(this.nombreFichero));
-			
-			while (true) {
-				String lineaFichero = fich.readUTF();
-				String [] vendedorLinea = lineaFichero.split(",");
+			fich =new BufferedReader(new FileReader(this.nombreFichero));
+			String line = fich.readLine();
+			while (line!=null) {
+				
+				String [] vendedorLinea = line.split(SEPARATOR);
 				Vendedor vendedor = new Vendedor();
-				vendedor.setNombre(vendedorLinea[0]);
-				vendedor.setApellidos(vendedorLinea[1]);
+				vendedor.setNombre(vendedorLinea[1]);
+				vendedor.setApellidos(vendedorLinea[0]);
 				vendedor.setTotal(Double.parseDouble(vendedorLinea[2]));
 				vendedor.setFecha(formatter.parse(vendedorLinea[3]));
 				listaVendedores.add(vendedor);
+				//Si el total es menor de 1000, hay que enviar los datos al servidor como expcecion
+				if(Double.parseDouble(vendedorLinea[2]) < 1000){
+					enviarExcepcion(vendedor);
+				}
+				line = fich.readLine();
 			}
+			tienda.setListaVendedores(listaVendedores);
+			fich.close();
+			return tienda;
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		
-		} catch (EOFException eof){
-			//Hemos llegado al final del fichero, no se hace nada más
-			tienda.setListaVendedores(listaVendedores);
-			try {
-				fich.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return tienda;
+		
 		} catch (IOException io) {
 			io.printStackTrace();
 		
@@ -63,6 +65,10 @@ public class FicheroDatos extends File{
 		}
 		return null;
 		
+	}
+	
+	private void enviarExcepcion(Vendedor vendedor){
+		System.out.println("Enviando al vendedor " + vendedor.getApellidos() + "(" + vendedor.getTotal() + "€) al servidor de excepciones");
 	}
 
 }
