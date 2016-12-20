@@ -12,7 +12,8 @@ public class Cliente {
 	 * @param args
 	 * @param argc
 	 */
-	public static void main(String[] args,int argc) {
+	public static void main(String[] args) {
+		int argc = args.length;
 		//Comprobamos los parámetros de entrada
 		if (argc < 1) {
 			errorArgumentos(1);
