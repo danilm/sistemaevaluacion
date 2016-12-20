@@ -1,6 +1,6 @@
 package com.ucavila;
 
-import java.io.File;
+
 
 public class Cliente {
 	//Este password se usa para generar el fichero de excepciones desde el servidor
