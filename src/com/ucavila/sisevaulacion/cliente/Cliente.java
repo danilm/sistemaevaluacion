@@ -1,6 +1,7 @@
-package com.ucavila;
+package com.ucavila.sisevaulacion.cliente;
 
-
+import com.ucavila.sisevaulacion.business.FicheroDatos;
+import com.ucavila.sisevaulacion.model.Tienda;
 
 public class Cliente {
 	//Este password se usa para generar el fichero de excepciones desde el servidor

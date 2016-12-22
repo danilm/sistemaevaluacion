@@ -1,4 +1,4 @@
-package com.ucavila;
+package com.ucavila.sisevaulacion.business;
 
 import java.io.BufferedReader;
 
@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import com.ucavila.sisevaulacion.model.Tienda;
+import com.ucavila.sisevaulacion.model.Vendedor;
 
 public class FicheroDatos extends File{
 

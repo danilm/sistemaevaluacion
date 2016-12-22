@@ -1,4 +1,4 @@
-package com.ucavila;
+package com.ucavila.sisevaulacion.model;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
