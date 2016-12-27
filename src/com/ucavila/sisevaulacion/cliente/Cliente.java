@@ -1,6 +1,7 @@
 package com.ucavila.sisevaulacion.cliente;
 
 import com.ucavila.sisevaulacion.business.FicheroDatos;
+import com.ucavila.sisevaulacion.comm.ClienteSocket;
 import com.ucavila.sisevaulacion.model.Tienda;
 
 public class Cliente {
@@ -40,6 +41,20 @@ public class Cliente {
 		} else if (argc==2){
 		
 		//Ahora vamos a comprobar el password (caso que sea la opcion 2)
+			if (args[1].equals(PASSWORD)){
+				//Conectamos con el servidor
+				ClienteSocket cliente = new ClienteSocket();
+				cliente.conectar("127.0.0.1",2244);
+				System.out.println("Obteniendo lista de vendedores...");
+				cliente.obtenerListaVendedores(PASSWORD);
+				System.exit(0);
+				
+				
+				
+			} else {
+				System.out.println("Error password");
+				System.exit(4);
+			}
 		}
 
 	}

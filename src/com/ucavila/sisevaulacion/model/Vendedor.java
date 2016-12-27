@@ -1,9 +1,14 @@
 package com.ucavila.sisevaulacion.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Vendedor {
+public class Vendedor implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private String apellidos;
 	private double total=0.0;

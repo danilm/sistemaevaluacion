@@ -1,11 +1,19 @@
 package com.ucavila.sisevaulacion.comm;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import com.ucavila.sisevaulacion.model.Tienda;
+import com.ucavila.sisevaulacion.model.Vendedor;
 
 public class ClienteSocket {
 
@@ -29,25 +37,32 @@ public class ClienteSocket {
 	}
 	
 	 public boolean obtenerListaVendedores(String password){
-		 BufferedReader br = null;
-		 PrintWriter pw = null;
-		 try {
-			br  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			pw = new PrintWriter(socket.getOutputStream(),true);
+		  try {
+			System.out.println("Obteniendo Lista de Vendedores Usando Socket " + this.socket.getPort());
+			InputStream is = this.socket.getInputStream();
+			
+			ObjectOutputStream pw = new ObjectOutputStream(this.socket.getOutputStream());
+			//OLD:PrintWriter pw = new PrintWriter(this.socket.getOutputStream(),true);
+			
+			//Obtiene el flujo de entrada asociado al socket:
+			//OLD:BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+			ObjectInputStream br = new ObjectInputStream(this.socket.getInputStream());
+			
 			
 			//Enviamos la cadena de identificacion:
-			pw.println("ClienteSiS");
-			String respuesta = br.readLine();
+			pw.writeObject("ClienteSiS");
+			String respuesta = (String)br.readObject();
+			System.out.println("Respuesta Servidor:" + respuesta);
 			if (respuesta.equals("ServidorSiS-passw")){
 				//Nos responde el servidor, le enviamos el password para que lo valide y nos devuelva el listado
-				pw.println(password);
-				respuesta = br.readLine();
+				pw.writeObject(password);
+				respuesta = (String)br.readObject();
 				//Lo primero que nos devolverá será un OK, caso contrario, algo ha pasado
 				if (respuesta.equals("OK")){
-					while (br.readLine()!=null){
-						String linea=br.readLine();
-						//Hay que ver cómo se trae los datos
-					}
+					System.out.println("OBTENIENDO DATOS DE LA TIENDA");
+					Tienda tienda= (Tienda) br.readObject();
+					tienda.mostrarTienda(tienda);
+					
 				} else {
 					System.out.println("Error, el servidor no acepta el password enviado");
 				}
@@ -57,14 +72,14 @@ public class ClienteSocket {
 			
 			br.close();
 			pw.close();
-			socket.close();
-		} catch (IOException e) {
+			this.socket.close();
+		} catch (IOException | ClassNotFoundException  e) {
 			System.out.println("Error de comunicacion con el host " + getAddress());
 			System.out.println(e.getMessage());
 			try {
-				br.close();
-				pw.close();
-				socket.close();
+				//br.close();
+				//pw.close();
+				this.socket.close();
 			} catch (IOException e1) {
 				System.out.println(e.getMessage());
 				return false;
@@ -76,6 +91,14 @@ public class ClienteSocket {
 	 }
 	 
 	 
+
+	private void imprimirTienda(Tienda tienda) {
+		System.out.println("TIENDA" +tienda.getNombreTienda());
+		for (Vendedor vendedor : tienda.getListaVendedores()){
+			System.out.println(vendedor.getApellidos() + "," + vendedor.getNombre() + " " + vendedor.getTotal() + "€ " + vendedor.getFecha());
+		}
+		
+	}
 
 	public String getAddress() {
 		return address;
