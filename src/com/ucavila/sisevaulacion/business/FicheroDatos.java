@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import com.ucavila.sisevaulacion.model.Tienda;
 import com.ucavila.sisevaulacion.model.Vendedor;
@@ -29,7 +30,8 @@ public class FicheroDatos extends File{
 	
 	public Tienda leerFichero(String nombre){
 		Tienda tienda = new Tienda(nombre);
-		ArrayList<Vendedor> listaVendedores = new ArrayList<Vendedor>();
+		TreeMap<String,Vendedor> listaVendedores = new TreeMap<String,Vendedor>();
+		Integer indice = 1;
 		BufferedReader fich = null;
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		try {
@@ -43,11 +45,12 @@ public class FicheroDatos extends File{
 				vendedor.setApellidos(vendedorLinea[0]);
 				vendedor.setTotal(Double.parseDouble(vendedorLinea[2]));
 				vendedor.setFecha(formatter.parse(vendedorLinea[3]));
-				listaVendedores.add(vendedor);
+				listaVendedores.put(vendedor.getApellidos(),vendedor);
 				//Si el total es menor de 1000, hay que enviar los datos al servidor como expcecion
 				if(Double.parseDouble(vendedorLinea[2]) < 1000){
 					enviarExcepcion(vendedor);
 				}
+				indice++;
 				line = fich.readLine();
 			}
 			tienda.setListaVendedores(listaVendedores);
@@ -69,6 +72,7 @@ public class FicheroDatos extends File{
 		
 	}
 	
+	//TODO: Aun sin hacer
 	private void enviarExcepcion(Vendedor vendedor){
 		System.out.println("Enviando al vendedor " + vendedor.getApellidos() + "(" + vendedor.getTotal() + "€) al servidor de excepciones");
 	}

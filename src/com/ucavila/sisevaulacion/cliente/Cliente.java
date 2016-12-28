@@ -35,7 +35,7 @@ public class Cliente {
 				System.exit(3);
 			}
 			Tienda tienda = ficheroEntrada.leerFichero("Mi Tienda");
-			tienda.mostrarTienda(tienda);
+			tienda.mostrarTienda();
 			
 			
 		} else if (argc==2){

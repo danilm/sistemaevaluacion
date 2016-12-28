@@ -3,7 +3,7 @@ package com.ucavila.sisevaulacion.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Vendedor implements Serializable{
+public class Vendedor implements Serializable,Comparable<Vendedor>{
 
 	/**
 	 * 
@@ -38,6 +38,17 @@ public class Vendedor implements Serializable{
 		this.fecha = fecha;
 	}
 	
+	@Override
+	public int compareTo(Vendedor v) {
+		return apellidos.compareTo(v.getApellidos());
+	}
 	
+	@Override
+	public boolean equals(Object o){
+		if (apellidos.compareTo(((Vendedor) o).getApellidos()) == 0) 
+			return true;
+		else 
+			return false;
+	}
 
 }

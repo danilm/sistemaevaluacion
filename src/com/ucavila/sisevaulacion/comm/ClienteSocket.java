@@ -61,7 +61,7 @@ public class ClienteSocket {
 				if (respuesta.equals("OK")){
 					System.out.println("OBTENIENDO DATOS DE LA TIENDA");
 					Tienda tienda= (Tienda) br.readObject();
-					tienda.mostrarTienda(tienda);
+					tienda.mostrarTienda();
 					
 				} else {
 					System.out.println("Error, el servidor no acepta el password enviado");
@@ -92,13 +92,7 @@ public class ClienteSocket {
 	 
 	 
 
-	private void imprimirTienda(Tienda tienda) {
-		System.out.println("TIENDA" +tienda.getNombreTienda());
-		for (Vendedor vendedor : tienda.getListaVendedores()){
-			System.out.println(vendedor.getApellidos() + "," + vendedor.getNombre() + " " + vendedor.getTotal() + "€ " + vendedor.getFecha());
-		}
-		
-	}
+	
 
 	public String getAddress() {
 		return address;

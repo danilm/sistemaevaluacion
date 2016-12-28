@@ -3,6 +3,9 @@ package com.ucavila.sisevaulacion.model;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Tienda implements Serializable{
 
@@ -11,7 +14,7 @@ public class Tienda implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String nombreTienda;
-	private ArrayList<Vendedor> listaVendedores = new ArrayList<Vendedor>();
+	private TreeMap<String, Vendedor> listaVendedores = new TreeMap<String, Vendedor>();
 	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 	
 	public Tienda(String nombre) {
@@ -25,24 +28,24 @@ public class Tienda implements Serializable{
 	public void setNombreTienda(String nombreTienda) {
 		this.nombreTienda = nombreTienda;
 	}
-	public ArrayList<Vendedor> getListaVendedores() {
+	public TreeMap<String, Vendedor> getListaVendedores() {
 		return listaVendedores;
 	}
-	public void setListaVendedores(ArrayList<Vendedor> listaVendedores) {
+	public void setListaVendedores(TreeMap<String, Vendedor> listaVendedores) {
 		this.listaVendedores = listaVendedores;
 	}
 	
-	public void mostrarTienda(Tienda tienda){
-		System.out.println("Tienda: " + tienda.getNombreTienda());
-		System.out.println("Listado de vendedores (total " + tienda.listaVendedores.size() + ")");
+	public void mostrarTienda(){
+		System.out.println("Tienda: " + this.getNombreTienda());
+		System.out.println("Listado de vendedores (total " + this.listaVendedores.size() + ")");
 		System.out.println("==========================================");
 		int indice=1;
-		for (Vendedor vendedor : tienda.listaVendedores){
-			System.out.println(indice + " " + vendedor.getApellidos() + " " + vendedor.getNombre() + " " + vendedor.getTotal() + "€ " + formatter.format(vendedor.getFecha()));
+		for (Map.Entry<String,Vendedor> vendedor : this.listaVendedores.entrySet()){
+			System.out.println(indice + " " + vendedor.getValue().getApellidos() + " " + vendedor.getValue().getNombre() + " " + vendedor.getValue().getTotal() + "€ " + formatter.format(vendedor.getValue().getFecha()));
 			indice++;
 		}
 		System.out.println("==========================================");
+		
 	}
-	
 	
 }
