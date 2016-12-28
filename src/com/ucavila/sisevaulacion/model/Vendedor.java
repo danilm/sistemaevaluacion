@@ -9,10 +9,20 @@ public class Vendedor implements Serializable,Comparable<Vendedor>{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private String ip;
 	private String nombre;
 	private String apellidos;
 	private double total=0.0;
 	private Date fecha;
+	
+	
+	public String getIp() {
+		return ip;
+	}
+	public void setIp(String ip) {
+		this.ip = ip;
+		
+	}
 	public String getNombre() {
 		return nombre;
 	}
@@ -50,5 +60,6 @@ public class Vendedor implements Serializable,Comparable<Vendedor>{
 		else 
 			return false;
 	}
+	
 
 }

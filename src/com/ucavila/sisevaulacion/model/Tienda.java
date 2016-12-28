@@ -2,8 +2,7 @@ package com.ucavila.sisevaulacion.model;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
+
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -41,7 +40,8 @@ public class Tienda implements Serializable{
 		System.out.println("==========================================");
 		int indice=1;
 		for (Map.Entry<String,Vendedor> vendedor : this.listaVendedores.entrySet()){
-			System.out.println(indice + " " + vendedor.getValue().getApellidos() + " " + vendedor.getValue().getNombre() + " " + vendedor.getValue().getTotal() + "€ " + formatter.format(vendedor.getValue().getFecha()));
+			System.out.println(indice + " " + vendedor.getValue().getApellidos() + " " + vendedor.getValue().getNombre() + " " 
+					+ vendedor.getValue().getTotal() + "€ " + formatter.format(vendedor.getValue().getFecha()) + " " + vendedor.getValue().getIp());
 			indice++;
 		}
 		System.out.println("==========================================");

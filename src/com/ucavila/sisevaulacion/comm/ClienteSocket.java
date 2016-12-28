@@ -1,14 +1,12 @@
 package com.ucavila.sisevaulacion.comm;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -95,6 +93,11 @@ public class ClienteSocket {
 				String respuesta = (String)br.readObject();
 				System.out.println("Respuesta Servidor:" + respuesta);
 				if (respuesta.equals("ServidorSiS-enviarExcepcion")){
+					//Obtenemos la IP local y se la añadimos a nuestro vendedor:
+					InetAddress inet = this.getSocket().getLocalAddress();
+					String ip=inet.getHostAddress();
+					vendedor.setIp(ip);
+					
 					//Enviamos el vendedor al servidor para que lo procese
 					pw.writeObject(vendedor);
 				} else {
