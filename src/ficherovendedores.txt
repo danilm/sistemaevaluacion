@@ -1,3 +1,6 @@
 Lopez Mesa,Daniel,2000,20-12-2016
+Hidalgo Priego,Isabel,900,20-12-2016
+Alvarez Aguila,Antonio,850,20-12-2016
+Bermudez Jimenez,Juan,1050,20-12-2016
 Pulido Roldan,Justo,100,12-12-2016
 Perez Molino,Isabel,1100,15-12-2016

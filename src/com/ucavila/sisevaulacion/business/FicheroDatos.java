@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+import com.ucavila.sisevaulacion.comm.ClienteSocket;
 import com.ucavila.sisevaulacion.model.Tienda;
 import com.ucavila.sisevaulacion.model.Vendedor;
 
@@ -72,9 +73,11 @@ public class FicheroDatos extends File{
 		
 	}
 	
-	//TODO: Aun sin hacer
 	private void enviarExcepcion(Vendedor vendedor){
-		System.out.println("Enviando al vendedor " + vendedor.getApellidos() + "(" + vendedor.getTotal() + "€) al servidor de excepciones");
+		System.out.println("Excepcion detectada! Enviando al vendedor " + vendedor.getApellidos() + "(" + vendedor.getTotal() + "€) al servidor de excepciones");
+		ClienteSocket cliente = new ClienteSocket();
+		cliente.conectar("127.0.0.1",2244);
+		cliente.enviarExcepcion(vendedor);
 	}
 
 }

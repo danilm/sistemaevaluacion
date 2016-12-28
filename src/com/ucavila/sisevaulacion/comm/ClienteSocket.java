@@ -39,13 +39,10 @@ public class ClienteSocket {
 	 public boolean obtenerListaVendedores(String password){
 		  try {
 			System.out.println("Obteniendo Lista de Vendedores Usando Socket " + this.socket.getPort());
-			InputStream is = this.socket.getInputStream();
 			
 			ObjectOutputStream pw = new ObjectOutputStream(this.socket.getOutputStream());
-			//OLD:PrintWriter pw = new PrintWriter(this.socket.getOutputStream(),true);
 			
 			//Obtiene el flujo de entrada asociado al socket:
-			//OLD:BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 			ObjectInputStream br = new ObjectInputStream(this.socket.getInputStream());
 			
 			
@@ -77,8 +74,7 @@ public class ClienteSocket {
 			System.out.println("Error de comunicacion con el host " + getAddress());
 			System.out.println(e.getMessage());
 			try {
-				//br.close();
-				//pw.close();
+				
 				this.socket.close();
 			} catch (IOException e1) {
 				System.out.println(e.getMessage());
@@ -90,7 +86,36 @@ public class ClienteSocket {
 		 return true;
 	 }
 	 
-	 
+	 public void enviarExcepcion(Vendedor vendedor){
+		 try {
+				ObjectOutputStream pw = new ObjectOutputStream(this.socket.getOutputStream());
+				ObjectInputStream br = new ObjectInputStream(this.socket.getInputStream());
+				
+				pw.writeObject("ClienteSiS-excepcion");
+				String respuesta = (String)br.readObject();
+				System.out.println("Respuesta Servidor:" + respuesta);
+				if (respuesta.equals("ServidorSiS-enviarExcepcion")){
+					//Enviamos el vendedor al servidor para que lo procese
+					pw.writeObject(vendedor);
+				} else {
+					System.out.println("Error, el servidor no ha devuelto la respuesta esperada");
+				}
+				br.close();
+				pw.close();
+				this.socket.close();
+			} catch (IOException | ClassNotFoundException e) {
+				System.out.println("Error de comunicacion con el host " + getAddress());
+				System.out.println(e.getMessage());
+				try {
+					this.socket.close();
+				} catch (IOException e1) {
+					System.out.println(e.getMessage());
+					
+				}
+				
+				
+			}
+	 }
 
 	
 
