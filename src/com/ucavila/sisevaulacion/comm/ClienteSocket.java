@@ -10,6 +10,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import com.ucavila.sisevaulacion.business.FicheroDatos;
 import com.ucavila.sisevaulacion.model.Tienda;
 import com.ucavila.sisevaulacion.model.Vendedor;
 
@@ -57,6 +58,13 @@ public class ClienteSocket {
 					System.out.println("OBTENIENDO DATOS DE LA TIENDA");
 					Tienda tienda= (Tienda) br.readObject();
 					tienda.mostrarTienda();
+					//Aquí los enviamos al fichero binario:
+					FicheroDatos fichero = new FicheroDatos("InformeServidor.txt");
+					if (fichero.escribirFichero(tienda)){
+						System.out.println("Fichero generado correctamente");
+					} else {
+						System.out.println("Error, no se ha podido generar el fichero:");
+					}
 					
 				} else {
 					System.out.println("Error, el servidor no acepta el password enviado");

@@ -1,15 +1,17 @@
 package com.ucavila.sisevaulacion.business;
 
 import java.io.BufferedReader;
-
+import java.io.BufferedWriter;
 import java.io.File;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 import java.util.TreeMap;
 
 import com.ucavila.sisevaulacion.comm.ClienteSocket;
@@ -77,6 +79,31 @@ public class FicheroDatos extends File{
 		ClienteSocket cliente = new ClienteSocket();
 		cliente.conectar("127.0.0.1",2244);
 		cliente.enviarExcepcion(vendedor);
+	}
+
+	public boolean escribirFichero(Tienda tienda) throws IOException {
+		TreeMap<String,Vendedor> listaVendedores = tienda.getListaVendedores();
+		
+		BufferedWriter bw = new BufferedWriter(new FileWriter(this.nombreFichero));
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			
+			for (Map.Entry<String,Vendedor> vendedor : listaVendedores.entrySet()){
+					bw.write(vendedor.getValue().getApellidos() + ", " + vendedor.getValue().getNombre() + ", " 
+						+ vendedor.getValue().getTotal() + "€ " + formatter.format(vendedor.getValue().getFecha())
+						+ ", " + vendedor.getValue().getIp() + "\n");
+			}
+				
+				
+			bw.close();
+			return true;
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		
+		} 
+		
 	}
 
 }
